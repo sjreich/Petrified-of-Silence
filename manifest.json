@@ -1,0 +1,24 @@
+  {
+    "name": "Sound Adjuster",
+
+    "description": "Turns off sound on certain sites if certain other websites are open",
+
+    "browser_action": {
+      "default_icon": "icon.png",
+      "default_popup": "popup.html"
+    },
+
+    "icons": {
+      "16": "icon.png"
+    },
+
+    "background": {
+      "scripts": ["background.js"]
+    },
+    
+    "version": "1.0",
+    "minimum_chrome_version": "9",
+    "manifest_version": 2,
+
+    "permissions": ["tabs", "storage"]
+  }
