@@ -1,5 +1,5 @@
 # Sound-Adjuster
-Do you use music to stay in the zone while you're working?  If you get distracted, this chrome extension will give you a gentle nudge to get back on track.  Instead of outright blocking access to a list of sites, this extension just mutes your (streaming) music if you visit one of them.  Want the music back?  Just get rid of the distractions.
+Do you use music to stay in the zone while you're working?  This chrome extension will use your music-addiction to give you a gentle nudge if you get distracted.  Whereas other productivity apps block sites outright, this one just mutes your (streaming) music if you visit a site on your list.  Want the music back?  Just close out the distraction.
 
 This extension relies on Chrome's experimental tab-muting feature.  Go to chrome://flags/#enable-tab-audio-muting, click "enable" under "Enable Tab Audio Muting UI", and restart Chrome.
 
