@@ -32,3 +32,8 @@ button {
   margin: 10px 200px 0 200px;
   font-size: 16px;
 }
+
+/*This is just needed for the first time you open the extension*/
+#on-off {
+  border: 2px solid green;
+}
