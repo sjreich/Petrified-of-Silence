@@ -1,24 +1,60 @@
+// variables for storing input
+var isOn = true;
+var distractionText;
+var musicText;
 
-
-// On opening, load the most recent user input into the text-areas
+// On opening, load in the last set of input
 document.addEventListener("DOMContentLoaded", function() {
 
+  // retrieve saved content
   chrome.storage.local.get('savedContent', function(result) {
-    
-    document.getElementById("distraction-field").innerHTML = 
-                                                    result['savedContent'][0];
-    document.getElementById("music-field").innerHTML = 
-                                                    result['savedContent'][1];
-  
+
+    // set up the text fields 
+    distractionText = result['savedContent'][0];
+    musicText = result['savedContent'][1];
+    updateTextAreaPresentation();
+
+    // set up the on-off button
+    isOn = result['savedContent'][2];
+    updateOnOffPresentation();
+
   });
 });
 
-// when the 'update' button is clicked, store the input in a single array
-document.getElementById("update-button").onclick = function() {
-  
-  var distractionText = document.getElementById("distraction-field").value;
-  var musicText = document.getElementById("music-field").value;
-  var toSave = [distractionText, musicText];
-  
-  chrome.storage.local.set({'savedContent': toSave});
+// toggle on-off button
+document.getElementById("on-off").onclick = function() {
+  isOn = !isOn;
+  save();
+  updateOnOffPresentation();
 };
+
+// update button saves the input
+document.getElementById("update-button").onclick = function() {
+  distractionText = document.getElementById("distraction-field").value;
+  musicText = document.getElementById("music-field").value;
+  save();
+};
+
+// save function: uses browser's local memory
+function save() {
+  var toSave = [distractionText, musicText, isOn];
+  chrome.storage.local.set({'savedContent': toSave});
+}
+
+// updates presentation of the on-off button
+function updateOnOffPresentation() {
+  if (isOn) {
+    document.getElementById("on-off").innerHTML = "On";
+    document.getElementById("on-off").style.border = "2px solid green";
+  } else {
+    document.getElementById("on-off").innerHTML = "Off";
+    document.getElementById("on-off").style.border = "2px solid red";
+  }
+}
+
+// updates presentation of the textareas
+function updateTextAreaPresentation() {
+  document.getElementById("distraction-field").innerHTML = distractionText;                                                 
+  document.getElementById("music-field").innerHTML = musicText;
+}
+

@@ -1,5 +1,5 @@
 
-// Run the main function whenever the user's tabs change
+// run the main function whenever the user's tabs change
 // ("onReplaced" is needed b/c "onUpdated" ignores reloading cached pages)
 chrome.tabs.onUpdated.addListener(mainFunction);
 chrome.tabs.onReplaced.addListener(mainFunction);
@@ -9,6 +9,12 @@ function mainFunction() {
 
   // from storage, pull in the list of distraction websites
   chrome.storage.local.get('savedContent', function(result) { 
+
+    // if the extension is off, don't do anything
+    var isOn = result['savedContent'][2];
+    if (!isOn) {
+      return;
+    }
 
     // format the results of user input into arrays of regexes
     var distractions = formatText(result['savedContent'][0]);
