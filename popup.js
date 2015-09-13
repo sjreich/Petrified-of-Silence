@@ -5,8 +5,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
   chrome.storage.local.get('savedContent', function(result) {
     
-    document.getElementById("distraction-field").innerHTML = result['savedContent'][0];
-    document.getElementById("music-field").innerHTML = result['savedContent'][1];
+    document.getElementById("distraction-field").innerHTML = 
+                                                    result['savedContent'][0];
+    document.getElementById("music-field").innerHTML = 
+                                                    result['savedContent'][1];
   
   });
 });
