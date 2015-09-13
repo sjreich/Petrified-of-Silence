@@ -1,12 +1,4 @@
 
-// the websites which are to be muted
-var noisemakers = [
-  /songza.com/, 
-  /asoftmurmur.com/,
-  /pandora.com/,
-  /spotify.com/
-];
-
 // Run the main function whenever the user's tabs change
 // ("onReplaced" is needed b/c "onUpdated" ignores reloading cached pages)
 chrome.tabs.onUpdated.addListener(mainFunction);
@@ -16,48 +8,53 @@ chrome.tabs.onRemoved.addListener(mainFunction);
 function mainFunction() {
 
   // from storage, pull in the list of distraction websites
-  var distractions = [];
-  chrome.storage.local.get('distractionSites', function(result) {
-    var distractionSites = result['distractionSites'];
-    var arrayOfSites = distractionSites.split("\n");
-    for (var i = 0; i < arrayOfSites.length; i++) {
-      distractions.push(new RegExp(arrayOfSites[i]));
-    }
+  chrome.storage.local.get('savedContent', function(result) { 
 
-    // get an array of all open tabs
+    // format the results of user input into arrays of regexes
+    var distractions = formatText(result['savedContent'][0]);
+    var music = formatText(result['savedContent'][1]);
+
+    // get all open tabs
     chrome.tabs.query({}, function(tabs){
 
-    //Check for a match between open tabs and noisemakers
-    //If there are noisemakers, list their ids
-    var noisemakersPresent = false;
-    var noisemakerIDs = [];
-    noisemakers.forEach(function (noisElement) {
-      tabs.forEach(function (tabElement) {
-        if (noisElement.test(tabElement.url)) {
-          noisemakerIDs.push((tabElement.id));
-          noisemakersPresent = true;
-        }
+      // get an array of url ID's for the open music and distraction tabs
+      openDistractions = collectMatches(distractions, tabs);
+      openMusic = collectMatches(music, tabs);
+
+      // mute all music if and only if there is a distraction
+      openMusic.forEach(function (musicID) {
+        chrome.tabs.update(musicID, {muted: openDistractions.length > 0});
       });
+
     });
-
-    // No noisemakers? Nothing else to worry about (for the moment).
-    if (!noisemakersPresent) {
-      return;
-    }
-
-    // check for a match between open tabs and distractions
-    var distractionsPresent = distractions.some(function (distElement) {
-      return tabs.some(function (tabElement) {
-        return distElement.test(tabElement.url);
-      });
-    });
-
-    // mute all noisemakers iff there is a distraction
-    noisemakerIDs.forEach(function (noisemakerID) {
-      chrome.tabs.update(noisemakerID, {muted: distractionsPresent});
-    });
-
-  });
-
   });
 };
+
+// converts the user-inputted string into an array of regexes
+function formatText(string) {
+  var outputArray = [];
+  string.split("\n").forEach(function(url) {
+    outputArray.push(new RegExp(url));
+  });
+  return outputArray;
+}
+
+// takes an array of regexes and an array of tabs, and 
+// returns an array of tab-ID's for any matches between them
+function collectMatches(regexArray, tabArray) {
+  var outputArray = [];
+  regexArray.forEach(function(regex) {
+    tabArray.forEach(function(tab) {
+      if (regex.test(tab.url)) {
+        outputArray.push(tab.id);
+      }
+    });
+  });
+  return outputArray;
+}
+
+
+
+
+
+
