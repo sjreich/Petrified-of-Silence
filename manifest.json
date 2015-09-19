@@ -1,26 +1,27 @@
-  {
-    "name": "Petrified of Silence",
+{
+  "name": "Petrified of Silence",
 
-    "description": "Turns off sound on certain sites if certain other websites are open",
+  "description": "Turns off sound on certain sites if certain other websites are open",
 
-    "browser_action": {
-      "default_icon": "icon.png",
-      "default_popup": "popup.html"
-    },
+  "browser_action": {
+    "default_icon": "icon19g.png",
+    "default_popup": "popup.html"
+  },
 
-    "icons": {
-      "16": "icon.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
-    },
+  "icons": {
+    "19": "icon19g.png",
+    "19": "icon19r.png",
+    "48": "icon48.png",
+    "128": "icon128.png"
+  },
 
-    "background": {
-      "scripts": ["background.js"]
-    },
-    
-    "version": "1.2",
-    "minimum_chrome_version": "37",
-    "manifest_version": 2,
+  "background": {
+    "scripts": ["background.js"]
+  },
+  
+  "version": "1.2",
+  "minimum_chrome_version": "37",
+  "manifest_version": 2,
 
-    "permissions": ["tabs", "storage"]
-  }
+  "permissions": ["tabs", "storage"]
+}

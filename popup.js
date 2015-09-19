@@ -46,9 +46,25 @@ function updateOnOffPresentation() {
   if (isOn) {
     document.getElementById("on-off").innerHTML = "On";
     document.getElementById("on-off").style.border = "2px solid green";
+    chrome.browserAction.setIcon({
+      path : {
+        19: "icon19g.png"
+      }
+    });
+
   } else {
     document.getElementById("on-off").innerHTML = "Off";
     document.getElementById("on-off").style.border = "2px solid red";
+    // chrome.browserAction.setIcon({
+    //     path: {19: "icon19r.png", 38: "france-38.png"},
+    //     tabId: details.tabId
+    // });
+
+    chrome.browserAction.setIcon({
+      path : {
+        19: "icon19r.png"
+      }
+    });
   }
 }
 

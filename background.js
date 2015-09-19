@@ -10,15 +10,12 @@ function mainFunction() {
   // from storage, pull in the list of distraction websites
   chrome.storage.local.get('savedContent', function(result) { 
 
-    // if the extension is off, don't do anything
-    var isOn = result['savedContent'][2];
-    if (!isOn) {
-      return;
-    }
-
     // format the results of user input into arrays of regexes
     var distractions = formatText(result['savedContent'][0]);
     var music = formatText(result['savedContent'][1]);
+
+    // if the extension is off, we don't want to do anything
+    var isOn = result['savedContent'][2];
 
     // get all open tabs
     chrome.tabs.query({}, function(tabs){
@@ -27,9 +24,11 @@ function mainFunction() {
       openDistractions = collectMatches(distractions, tabs);
       openMusic = collectMatches(music, tabs);
 
-      // mute all music if and only if there is a distraction
+      // mute all music if and only if there is a distraction and the extension is on
       openMusic.forEach(function (musicID) {
-        chrome.tabs.update(musicID, {muted: openDistractions.length > 0});
+        chrome.tabs.update(
+          musicID, {muted: isOn && openDistractions.length > 0}
+        );
       });
 
     });
